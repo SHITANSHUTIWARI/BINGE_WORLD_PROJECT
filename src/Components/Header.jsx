@@ -14,11 +14,11 @@ function Header() {
     const menu=[
         {
             name:'HOME',
-            // icon:HiHome
+            icon:HiHome
         },
         {
             name:'SEARCH',
-            // icon:HiMagnifyingGlass
+            icon:HiMagnifyingGlass
         },
         {
             name:'WATCH LIST',

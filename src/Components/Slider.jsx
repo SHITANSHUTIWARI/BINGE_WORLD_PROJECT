@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import GlobalApi from '../Services/GlobalApi'
-// import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 const IMAGE_BASE_URL="https://image.tmdb.org/t/p/original";
 const screenWidth=window.innerWidth;
 function Slider() {
@@ -25,12 +25,12 @@ function Slider() {
     }
   return (
     <div>
-        {/* <HiChevronLeft className="hidden md:block text-white text-[30px] absolute
+        <HiChevronLeft className="hidden md:block text-white text-[30px] absolute
         mx-8 mt-[150px] cursor-pointer " 
-        onClick={()=>sliderLeft(elementRef.current)}/> */}
-        {/* <HiChevronRight className='hidden md:block text-white text-[30px] absolute
+        onClick={()=>sliderLeft(elementRef.current)}/>
+        <HiChevronRight className='hidden md:block text-white text-[30px] absolute
         mx-8 mt-[150px] cursor-pointer right-0' 
-        onClick={()=>sliderRight(elementRef.current)}/> */}
+        onClick={()=>sliderRight(elementRef.current)}/>
 
    
     <div className='flex overflow-x-auto w-full px-16 py-4

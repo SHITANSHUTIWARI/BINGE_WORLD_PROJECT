@@ -6,14 +6,17 @@ import MovieDetailPage from './pages/MovieDetailPage';
 import SearchPage from './pages/SearchPage';
 import GenresPage from './pages/GenresPage';
 import UserPage from './pages/UserPage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 import { Movie } from './components/MovieCard';
 
-type PageType = 'home' | 'movie-detail' | 'search' | 'genres' | 'user';
+type PageType = 'home' | 'movie-detail' | 'search' | 'genres' | 'user' | 'sign-in' | 'sign-up';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleMovieClick = (movie: Movie) => {
     setSelectedMovie(movie);
@@ -29,6 +32,23 @@ function App() {
     setCurrentPage('home');
     setSelectedMovie(null);
     setSearchQuery('');
+  };
+
+  const handleSignIn = (credentials: { email: string; password: string }) => {
+    // Mock: accept any credentials
+    setIsLoggedIn(true);
+    setCurrentPage('home');
+  };
+
+  const handleSignUp = (credentials: { email: string; password: string }) => {
+    // Mock: accept any credentials
+    setIsLoggedIn(true);
+    setCurrentPage('home');
+  };
+
+  const handleSignOut = () => {
+    setIsLoggedIn(false);
+    setCurrentPage('home');
   };
 
   const renderCurrentPage = () => {
@@ -56,12 +76,20 @@ function App() {
           />
         );
       case 'user':
+        if (!isLoggedIn) {
+          setTimeout(() => setCurrentPage('sign-in'), 0);
+          return null;
+        }
         return (
           <UserPage
             onMovieClick={handleMovieClick}
             onBack={handleBackToHome}
           />
         );
+      case 'sign-in':
+        return <SignInPage onSignIn={handleSignIn} onNavigate={handleNavigate} />;
+      case 'sign-up':
+        return <SignUpPage onSignUp={handleSignUp} onNavigate={handleNavigate} />;
       default:
         return (
           <HomePage
@@ -85,6 +113,10 @@ function App() {
       setCurrentPage('genres');
     } else if (page === 'user') {
       setCurrentPage('user');
+    } else if (page === 'sign-in') {
+      setCurrentPage('sign-in');
+    } else if (page === 'sign-up') {
+      setCurrentPage('sign-up');
     } else {
       setCurrentPage('home');
     }
@@ -100,6 +132,8 @@ function App() {
           currentPage={currentPage}
           onSearch={handleSearch}
           onNavigate={handleNavigate}
+          isLoggedIn={isLoggedIn}
+          onSignOut={handleSignOut}
         />
       )}
 

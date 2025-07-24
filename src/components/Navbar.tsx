@@ -5,12 +5,13 @@ interface NavbarProps {
   currentPage?: string;
   onSearch?: (query: string) => void;
   onNavigate?: (page: string) => void;
+  isLoggedIn?: boolean;
+  onSignOut?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch, onNavigate }) => {
+const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch, onNavigate, isLoggedIn, onSignOut }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn] = useState(false); // Mock auth state
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,34 +58,42 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch, onNavig
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
+              (link.id !== 'user' || isLoggedIn) && (
+                <button
+                  key={link.id}
+                  onClick={() => onNavigate && onNavigate(link.id)}
+                  className={`text-sm font-medium transition-colors hover:text-[#F5C518] ${
+                    currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
+                  }`}
+                  style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
+                >
+                  {link.label}
+                </button>
+              )
+            ))}
+            {isLoggedIn ? (
               <button
-                key={link.id}
-                onClick={() => onNavigate && onNavigate(link.id)}
-                className={`text-sm font-medium transition-colors hover:text-[#F5C518] ${
-                  currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
-                }`}
+                onClick={onSignOut}
+                className="text-[#B0B0B0] hover:text-[#E50914] transition-colors ml-4"
                 style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
               >
-                {link.label}
+                Sign Out
               </button>
-            ))}
-            
-            {isLoggedIn ? (
-              <div className="flex items-center space-x-4">
-                <Heart className="w-5 h-5 text-[#B0B0B0] hover:text-[#E50914] cursor-pointer transition-colors" />
-                <div className="w-8 h-8 bg-[#F5C518] rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-[#121212]" />
-                </div>
-              </div>
             ) : (
-              <div className="flex items-center space-x-3">
-                <button className="text-[#B0B0B0] hover:text-white transition-colors">
+              <>
+                <button
+                  className="text-[#B0B0B0] hover:text-white transition-colors"
+                  onClick={() => onNavigate && onNavigate('sign-in')}
+                >
                   Sign In
                 </button>
-                <button className="bg-[#E50914] text-white px-4 py-2 rounded-lg hover:bg-[#d40812] transition-colors">
+                <button
+                  className="bg-[#E50914] text-white px-4 py-2 rounded-lg hover:bg-[#d40812] transition-colors"
+                  onClick={() => onNavigate && onNavigate('sign-up')}
+                >
                   Sign Up
                 </button>
-              </div>
+              </>
             )}
           </div>
 
@@ -119,34 +128,52 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch, onNavig
         <div className="md:hidden bg-[#1F1F1F] border-t border-[#333]">
           <div className="px-4 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => {
-                  onNavigate && onNavigate(link.id);
-                  setIsMenuOpen(false);
-                }}
-                className={`block px-3 py-2 text-base font-medium transition-colors hover:text-[#F5C518] ${
-                  currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
-                }`}
-                style={{ background: 'none', border: 'none', outline: 'none', width: '100%', textAlign: 'left' }}
-              >
-                {link.label}
-              </button>
+              (link.id !== 'user' || isLoggedIn) && (
+                <button
+                  key={link.id}
+                  onClick={() => {
+                    onNavigate && onNavigate(link.id);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block px-3 py-2 text-base font-medium transition-colors hover:text-[#F5C518] ${
+                    currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
+                  }`}
+                  style={{ background: 'none', border: 'none', outline: 'none', width: '100%', textAlign: 'left' }}
+                >
+                  {link.label}
+                </button>
+              )
             ))}
             <div className="border-t border-[#333] pt-3 mt-3">
               {isLoggedIn ? (
-                <div className="flex items-center space-x-3 px-3">
-                  <div className="w-8 h-8 bg-[#F5C518] rounded-full flex items-center justify-center">
-                    <User className="w-5 h-5 text-[#121212]" />
-                  </div>
-                  <span className="text-white">Profile</span>
-                </div>
+                <button
+                  onClick={() => {
+                    onSignOut && onSignOut();
+                    setIsMenuOpen(false);
+                  }}
+                  className="block w-full text-left text-[#B0B0B0] hover:text-[#E50914] transition-colors"
+                  style={{ background: 'none', border: 'none', outline: 'none' }}
+                >
+                  Sign Out
+                </button>
               ) : (
                 <div className="space-y-2 px-3">
-                  <button className="block w-full text-left text-[#B0B0B0] hover:text-white transition-colors">
+                  <button
+                    className="block w-full text-left text-[#B0B0B0] hover:text-white transition-colors"
+                    onClick={() => {
+                      onNavigate && onNavigate('sign-in');
+                      setIsMenuOpen(false);
+                    }}
+                  >
                     Sign In
                   </button>
-                  <button className="block w-full bg-[#E50914] text-white px-4 py-2 rounded-lg hover:bg-[#d40812] transition-colors">
+                  <button
+                    className="block w-full bg-[#E50914] text-white px-4 py-2 rounded-lg hover:bg-[#d40812] transition-colors"
+                    onClick={() => {
+                      onNavigate && onNavigate('sign-up');
+                      setIsMenuOpen(false);
+                    }}
+                  >
                     Sign Up
                   </button>
                 </div>

@@ -18,9 +18,10 @@ interface Genre {
 
 interface HomePageProps {
   onMovieClick?: (movie: Movie) => void;
+  trendingRef?: React.RefObject<HTMLDivElement>;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onMovieClick }) => {
+const HomePage: React.FC<HomePageProps> = ({ onMovieClick, trendingRef }) => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
@@ -93,11 +94,13 @@ const HomePage: React.FC<HomePageProps> = ({ onMovieClick }) => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Trending Movies */}
-        <MovieCarousel
-          title="Trending Now"
-          movies={trendingMovies}
-          onMovieClick={onMovieClick}
-        />
+        <div ref={trendingRef}>
+          <MovieCarousel
+            title="Trending Now"
+            movies={trendingMovies}
+            onMovieClick={onMovieClick}
+          />
+        </div>
 
         {/* Top Rated Movies */}
         <MovieCarousel

@@ -4,9 +4,10 @@ import { Search, Menu, X, Star, User, Heart } from 'lucide-react';
 interface NavbarProps {
   currentPage?: string;
   onSearch?: (query: string) => void;
+  onNavigate?: (page: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch }) => {
+const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch, onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn] = useState(false); // Mock auth state
@@ -19,10 +20,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch }) => {
   };
 
   const navLinks = [
-    { id: 'home', label: 'Home', href: '#' },
-    { id: 'movies', label: 'Movies', href: '#' },
-    { id: 'genres', label: 'Genres', href: '#' },
-    { id: 'trending', label: 'Trending', href: '#' },
+    { id: 'home', label: 'Home' },
+    { id: 'genres', label: 'Genres' },
+    { id: 'trending', label: 'Trending' },
+    { id: 'user', label: 'Profile' },
   ];
 
   return (
@@ -56,15 +57,16 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch }) => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.id}
-                href={link.href}
+                onClick={() => onNavigate && onNavigate(link.id)}
                 className={`text-sm font-medium transition-colors hover:text-[#F5C518] ${
                   currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
                 }`}
+                style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
               >
                 {link.label}
-              </a>
+              </button>
             ))}
             
             {isLoggedIn ? (
@@ -117,15 +119,19 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage = 'home', onSearch }) => {
         <div className="md:hidden bg-[#1F1F1F] border-t border-[#333]">
           <div className="px-4 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.id}
-                href={link.href}
+                onClick={() => {
+                  onNavigate && onNavigate(link.id);
+                  setIsMenuOpen(false);
+                }}
                 className={`block px-3 py-2 text-base font-medium transition-colors hover:text-[#F5C518] ${
                   currentPage === link.id ? 'text-[#F5C518]' : 'text-[#B0B0B0]'
                 }`}
+                style={{ background: 'none', border: 'none', outline: 'none', width: '100%', textAlign: 'left' }}
               >
                 {link.label}
-              </a>
+              </button>
             ))}
             <div className="border-t border-[#333] pt-3 mt-3">
               {isLoggedIn ? (

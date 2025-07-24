@@ -66,8 +66,27 @@ function App() {
         return (
           <HomePage
             onMovieClick={handleMovieClick}
+            trendingRef={trendingRef}
           />
         );
+    }
+  };
+
+  // Add trending ref
+  const trendingRef = React.useRef<HTMLDivElement>(null);
+
+  const handleNavigate = (page: string) => {
+    if (page === 'trending') {
+      setCurrentPage('home');
+      setTimeout(() => {
+        trendingRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100); // Wait for HomePage to render
+    } else if (page === 'genres') {
+      setCurrentPage('genres');
+    } else if (page === 'user') {
+      setCurrentPage('user');
+    } else {
+      setCurrentPage('home');
     }
   };
 
@@ -80,6 +99,7 @@ function App() {
         <Navbar 
           currentPage={currentPage}
           onSearch={handleSearch}
+          onNavigate={handleNavigate}
         />
       )}
 

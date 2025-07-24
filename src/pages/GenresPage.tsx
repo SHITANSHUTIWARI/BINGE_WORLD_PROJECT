@@ -38,7 +38,7 @@ const GenresPage: React.FC<GenresPageProps> = ({ onMovieClick, onBack }) => {
       } catch (error) {
         console.error('Error loading genres:', error);
         setGenres([]);
-        if ([] .length > 0) {
+        if ([].length > 0) {
           setSelectedGenre([][0]);
         }
         setIsLoading(false);

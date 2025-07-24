@@ -4,19 +4,21 @@ const ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYjllNmQ5MTUwYjI1NjY4MTI1Z
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const fetchFromTMDB = async (endpoint: string, params: Record<string, string | number> = {}) => {
-  const url = new URL(`${BASE_URL}${endpoint}`);
+  const url = new URL(BASE_URL + endpoint);
   url.searchParams.append('api_key', API_KEY);
   Object.entries(params).forEach(([key, value]) => {
     url.searchParams.append(key, String(value));
   });
-  const res = await fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
       'Content-Type': 'application/json',
     },
   });
-  if (!res.ok) throw new Error(`TMDB API error: ${res.status}`);
-  return res.json();
+  if (!response.ok) {
+    throw new Error('Failed to fetch from TMDB');
+  }
+  return response.json();
 };
 
 export const fetchTrendingMovies = async () => {

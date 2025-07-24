@@ -46,7 +46,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, movies, onMovieCli
   }
 
   return (
-    <div className="mb-8 relative group">
+    <div className="movie-carousel">
       <h2 className="text-2xl font-bold text-white mb-4 font-['Poppins']">{title}</h2>
       
       <div className="relative">
@@ -73,10 +73,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, movies, onMovieCli
         {/* Carousel container */}
         <div
           ref={scrollRef}
-          className="flex space-x-4 overflow-x-auto scrollbar-hide pb-4"
-          onScroll={checkScrollButtons}
+          className="flex overflow-x-auto gap-4 scrollbar-hide"
           style={{
-            scrollbarWidth: 'none',
+            scrollBehavior: 'smooth',
             msOverflowStyle: 'none',
           }}
         >

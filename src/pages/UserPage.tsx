@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { User, Heart, Star, Bookmark, Settings, LogOut, ArrowLeft } from 'lucide-react';
 import MovieCard, { Movie } from '../components/MovieCard';
-// Remove import of mockMovies
 
 interface UserPageProps {
   onMovieClick?: (movie: Movie) => void;
@@ -23,7 +22,7 @@ const UserPage: React.FC<UserPageProps> = ({ onMovieClick, onBack }) => {
   };
 
   // Mock user movies (these would come from a database in a real app)
-  const userMovies = {
+  const userMovies: { watchlist: Movie[]; ratings: Movie[]; favorites: Movie[] } = {
     watchlist: [],
     ratings: [],
     favorites: []
